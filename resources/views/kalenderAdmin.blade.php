@@ -190,16 +190,12 @@
 
   <!-- <h1>Kalender Kegiatan Desa</h1> -->
 
-  <!-- Header dan Tombol Logout -->
-<div style="display: flex; align-items: center; justify-content: space-between; margin: 20px;">
-  <div>
-    <button onclick="logout()" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
-      Logout
-    </button>
-  </div>
-  <h1 style="margin: 0 auto;">Kalender Kegiatan Desa</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+  <h1 style="margin: 0;">Kalender Kegiatan Desa</h1>
+  <button onclick="logout()" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+    Logout
+  </button>
 </div>
-
 
 
   <div style="text-align: center; margin: 20px 0;">
@@ -344,6 +340,11 @@
       }
     });
 
+    function logout() {
+    localStorage.removeItem("adminToken"); // hapus token admin
+    window.location.href = "/admin/login"; // redirect ke login
+  }
+
     document.addEventListener('DOMContentLoaded', function () {
       var calendarEl = document.getElementById('calendar');
 
@@ -396,9 +397,6 @@
       });
 
       calendar.render();
-       <button onclick="logout()" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
-      Logout
-    </button>
     });
 
     document.querySelector(".btn-danger").addEventListener("click", async function () {
