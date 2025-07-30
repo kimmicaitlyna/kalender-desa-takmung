@@ -341,8 +341,10 @@
     });
 
       async function logout() {
-    const token = localStorage.getItem("adminToken");
-
+    if (!token) {
+      alert("Token tidak ditemukan");
+      return;
+    }
     try {
       const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
         method: "POST",
@@ -354,7 +356,7 @@
 
       if (response.ok) {
         alert("Berhasil logout");
-        localStorage.removeItem("adminToken"); // hapus token dari localStorage
+        token = null;
         window.location.href = "/admin/login"; // redirect ke halaman login
       } else {
         const result = await response.json();

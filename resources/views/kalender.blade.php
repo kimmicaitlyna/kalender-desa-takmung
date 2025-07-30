@@ -126,6 +126,18 @@
   </style>
 </head>
 <body>
+  <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
+  <button onclick="window.location.href='/admin/login'" style="
+    padding: 8px 16px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  ">Login Admin</button>
+</div>
+
 
   <h1>Kalender Kegiatan Desa Takmung</h1>
   <div id="calendar"></div>
