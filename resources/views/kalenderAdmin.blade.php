@@ -188,7 +188,17 @@
 </head>
 <body>
 
-  <h1>Kalender Kegiatan Desa</h1>
+  <!-- <h1>Kalender Kegiatan Desa</h1> -->
+
+  <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px;">
+    <div>
+      <button onclick="logout()" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Logout
+      </button>
+    </div>
+    <h1 style="margin: 0 auto;">Kalender Kegiatan Desa</h1>
+  </div>
+
 
   <div style="text-align: center; margin: 20px 0;">
     <button class="create-btn" onclick="openCreateModal()">+ Buat Kegiatan</button>
