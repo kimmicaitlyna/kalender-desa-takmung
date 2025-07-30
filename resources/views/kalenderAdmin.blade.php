@@ -197,7 +197,7 @@
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-  ">Logout /button>
+  ">Logout </button>
 </div>
 
   <h1>Kalender Kegiatan Desa</h1>
