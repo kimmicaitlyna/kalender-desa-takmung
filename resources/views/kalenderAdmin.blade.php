@@ -188,15 +188,19 @@
 </head>
 <body>
 
-  <!-- <h1>Kalender Kegiatan Desa</h1> -->
-
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
-  <h1 style="margin: 0;">Kalender Kegiatan Desa</h1>
-  <button onclick="logout()" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
-    Logout
-  </button>
+  <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
+  <button  style="
+    padding: 8px 16px;
+    background-color: #c60000ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  ">Logout /button>
 </div>
 
+  <h1>Kalender Kegiatan Desa</h1>
 
   <div style="text-align: center; margin: 20px 0;">
     <button class="create-btn" onclick="openCreateModal()">+ Buat Kegiatan</button>
@@ -319,7 +323,7 @@
       }
 
       try {
-        const response = await fetch("https://kalender.takmung.site/api/admin/create-kegiatan", {
+        const response = await fetch("zadmin/create-kegiatan", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -340,33 +344,6 @@
       }
     });
 
-      async function logout() {
-    if (!token) {
-      alert("Token tidak ditemukan");
-      return;
-    }
-    try {
-      const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + token,
-          "Content-Type": "application/json"
-        }
-      });
-
-      if (response.ok) {
-        alert("Berhasil logout");
-        token = null;
-        window.location.href = "/admin/login"; // redirect ke halaman login
-      } else {
-        const result = await response.json();
-        alert("Gagal logout: " + result.message);
-      }
-    } catch (error) {
-      alert("Terjadi kesalahan saat logout.");
-    }
-  }
-
     document.addEventListener('DOMContentLoaded', function () {
       var calendarEl = document.getElementById('calendar');
 
@@ -380,7 +357,7 @@
         },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch("https://kalender.takmung.site/api/admin/kegiatan", {
+            const response = await fetch("http://127.0.0.1:8000/api/admin/kegiatan", {
               headers: { "Authorization": "Bearer " + token }
             });
 
@@ -431,7 +408,7 @@
       if (!konfirmasi) return;
 
       try {
-        const response = await fetch(`https://kalender.takmung.site/api/admin/delete-kegiatan/${selectedEventId}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/admin/delete-kegiatan/${selectedEventId}`, {
           method: "DELETE",
           headers: {
             "Authorization": "Bearer " + token
@@ -475,7 +452,7 @@
       }
 
       try {
-        const response = await fetch(`https://kalender.takmung.site/api/admin/update-kegiatan/${selectedEventId}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/admin/update-kegiatan/${selectedEventId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
