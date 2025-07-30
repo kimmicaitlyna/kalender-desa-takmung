@@ -36,11 +36,25 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $user = $request->user();
 
-        return response()->json([
-            'message' => 'Logout berhasil'
-        ]);
+         if (method_exists($user, 'currentAccessToken') && $user->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+            return response()->json(['message' => 'Logged out successfully']);
+        }
+
+        // Atau hapus token pakai header manual
+        $authHeader = $request->header('Authorization');
+        if ($authHeader && str_starts_with($authHeader, 'Bearer ')) {
+            $tokenValue = explode(' ', $authHeader)[1];
+            $token = PersonalAccessToken::findToken($tokenValue);
+            if ($token) {
+                $token->delete();
+                return response()->json(['message' => 'Logged out successfully']);
+            }
+        }
+
+        return response()->json(['message' => 'No token found'], 401);
     }
 
     public function registerAdmin(Request $request)

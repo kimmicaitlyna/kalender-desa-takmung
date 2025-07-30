@@ -189,7 +189,7 @@
 <body>
 
   <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
-  <button  style="
+  <button  id="logoutBtn" style="
     padding: 8px 16px;
     background-color: #c60000ff;
     color: white;
@@ -397,6 +397,34 @@
 
       calendar.render();
     });
+
+  document.getElementById("logoutBtn").addEventListener("click", async function () {
+    const konfirmasi = confirm("Yakin ingin logout?");
+    if (!konfirmasi) return;
+
+    try {
+      const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Accept": "application/json"
+        }
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Logout berhasil");
+        window.location.href = "/admin/login";
+      } else {
+        alert("Logout gagal: " + (result.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan saat logout.");
+    }
+  });
+
 
     document.querySelector(".btn-danger").addEventListener("click", async function () {
       if (!selectedEventId) {
