@@ -415,6 +415,8 @@
 
       if (response.ok) {
         alert("Logout berhasil");
+        token = null;
+        localStorage.removeItem("adminToken");
         window.location.href = "/admin/login";
       } else {
         alert("Logout gagal: " + (result.message || "Unknown error"));
