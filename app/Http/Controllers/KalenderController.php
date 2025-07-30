@@ -9,25 +9,26 @@ use Carbon\Carbon;
 
 class KalenderController extends Controller
 {
+
     public function getEvents()
     {
-        // Mengambil semua data dari model
         $data = Kegiatan::all();
 
-        // Menyusun data dalam format event
         $events = [];
         foreach ($data as $row) {
             $events[] = [
                 'id'          => $row->id,
                 'title'       => $row->judul,
                 'start'       => $row->tanggalMulai,
-                'end'         => Carbon::parse($row->tanggalSelesai)->addDay()->toDateString(),
+                'end'         => Carbon::parse($row->tanggalSelesai)->addDay()->toDateString(), // untuk tampilan kalender
                 'description' => $row->deskripsi,
                 'extendedProps' => [
-                    'lokasi'        => $row->lokasi,
-                    'keterangan'    => $row->keterangan,
-                    'jenisPeserta'  => $row->jenisPeserta,
-                    'jumlahPeserta' => $row->jumlahPeserta,
+                    'lokasi'             => $row->lokasi,
+                    'keterangan'         => $row->keterangan,
+                    'jenisPeserta'       => $row->jenisPeserta,
+                    'jumlahPeserta'      => $row->jumlahPeserta,
+                    'tanggalMulaiAsli'   => $row->tanggalMulai,
+                    'tanggalSelesaiAsli' => $row->tanggalSelesai,
                 ]
             ];
         }
@@ -42,11 +43,11 @@ class KalenderController extends Controller
                 'judul'          => 'required|string',
                 'tanggalMulai'   => 'required|date',
                 'tanggalSelesai' => 'required|date',
-                'deskripsi'      => 'required|string',
-                'lokasi'         => 'required|string',
-                'keterangan'     => 'required|string',
-                'jenisPeserta'   => 'required|string',
-                'jumlahPeserta'  => 'required|integer|min:1',
+                'deskripsi'      => 'nullable|string',
+                'lokasi'         => 'nullable|string',
+                'keterangan'     => 'nullable|string',
+                'jenisPeserta'   => 'nullable|string',
+                'jumlahPeserta'  => 'nullable|integer',
             ]);
             
             /////////CREATE kegiatan /////////
@@ -86,6 +87,55 @@ class KalenderController extends Controller
                 "message" => "delete successful",
                 "data" => $kegiatan
             ], 200);
+        }catch(Exception $e){
+            return response()->json([
+                "status" => false,
+                "message" => "Something went wrong",
+                "data" => $e->getMessage()
+            ], 200);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try{
+            $kegiatan = Kegiatan::find($id);
+            if (!$kegiatan) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Kegiatan not found"
+                ], 404);
+            }
+
+            $request->validate([
+                'judul'          => 'nullable|string',
+                'tanggalMulai'   => 'nullable|date',
+                'tanggalSelesai' => 'nullable|date',
+                'deskripsi'      => 'nullable|string',
+                'lokasi'         => 'nullable|string',
+                'keterangan'     => 'nullable|string',
+                'jenisPeserta'   => 'nullable|string',
+                'jumlahPeserta'  => 'nullable|integer|min:1',
+            ]);
+
+            $kegiatan->update($request->only([
+                'judul',
+                'tanggalMulai',
+                'tanggalSelesai',
+                'deskripsi',
+                'lokasi',
+                'keterangan',
+                'jenisPeserta',
+                'jumlahPeserta',
+            ]));
+
+
+            return response()->json([
+                "status" => true,
+                "message" => "update successful",
+                "data" => $kegiatan
+            ], 200);
+
         }catch(Exception $e){
             return response()->json([
                 "status" => false,

@@ -12,20 +12,11 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/kalender/events', [KalenderController::class, 'getEvents']);
 Route::post('/admin/login', [UserController::class, 'login']);
-Route::post('/admin/register', [UserController::class, 'registerAdmin']);
-
-// Route::middleware(['auth', 'admin'])->group(function () {
-//     Route::resource('/admin/kegiatan', [KalenderController::class, 'getEvents']);
-// });
-
-// Route::middleware('auth:sanctum')->group(function () {
-    // Route::get('/admin/kegiatan', [KalenderController::class, 'getEvents']);
-// });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin/kegiatan', [KalenderController::class, 'getEvents']);
     Route::post('/admin/create-kegiatan', [KalenderController::class, 'store']);
-
+    Route::put('/admin/update-kegiatan/{id}', [KalenderController::class, 'update']);
     Route::delete('/admin/delete-kegiatan/{id}', [KalenderController::class, 'delete']);
 });
 

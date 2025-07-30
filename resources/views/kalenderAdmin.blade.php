@@ -3,84 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <title>Kalender Kegiatan Desa</title>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/id.global.min.js"></script>
+
 
   <!-- FullCalendar CSS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    body {
+     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #ffe4e1, #fffaf0);
+      background: #f7f9fc;
       color: #333;
       margin: 0;
-      min-height: 100vh;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
     }
 
     h1 {
-      color: #d84315;
-      font-weight: 700;
-      font-size: 2.5em;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-      margin-bottom: 10px;
+      color: #444;
+      font-weight: 600;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      text-align: center;
     }
 
-    #calendar {
-      max-width: 1000px;
-      width: 100%;
-      background: #ffffffcc;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      backdrop-filter: blur(6px);
-    }
-
-    .fc-event {
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .fc-event:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    #createModal, #eventModal {
+      z-index: 1000;
     }
 
     .modal {
       display: none;
       position: fixed;
-      z-index: 9990;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
       background-color: rgba(0,0,0,0.5);
+      overflow: auto;
       animation: fadeIn 0.3s ease-in-out;
     }
 
     .modal-content {
       background-color: #fff;
-      margin: 5% auto;
-      padding: 30px;
       border-radius: 12px;
-      width: 90%;
+      padding: 30px;
+      width: 95%;
       max-width: 600px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      animation: slideUp 0.3s ease-out;
+      margin: 50px auto;
       position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: 500;
+      display: block;
+    }
+
+    input, textarea {
+      margin-top: 5px;
+      padding: 10px;
+      font-size: 0.95em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .submit-btn, .btn-primary, .btn-danger {
+      padding: 10px 16px;
+      font-size: 1em;
+      font-weight: 500;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      background-color: #388e3c;
+      color: #fff;
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      background-color: #1976d2;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: #125ea9;
+    }
+
+    .btn-danger {
+      background-color: #e53935;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c62828;
     }
 
     .close {
       position: absolute;
       top: 12px;
-      right: 16px;
-      color: #999;
-      font-size: 28px;
-      font-weight: bold;
+      right: 20px;
+      font-size: 26px;
+      color: #aaa;
       cursor: pointer;
     }
 
@@ -88,104 +122,77 @@
       color: #000;
     }
 
-    .modal-content p,
-    .modal-content label,
-    .modal-content input,
-    .modal-content textarea {
-      width: 100%;
-      margin: 10px 0;
-      font-size: 1rem;
-    }
-
-    .modal-content input,
-    .modal-content textarea {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    button.create-btn {
-      background-color: #d84315;
-      color: white;
-      padding: 10px 18px;
-      font-size: 1em;
-      font-weight: 600;
+    .fc-event {
+      background-color: #1976d2 !important;
       border: none;
-      border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-      cursor: pointer;
-      margin-bottom: 20px;
-      transition: background-color 0.3s;
-    }
-
-    button.create-btn:hover {
-      background-color: #c2370f;
-    }
-
-    button.submit-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 16px;
-      border: none;
+      color: white !important;
+      padding: 5px 10px;
       border-radius: 6px;
-      font-size: 1em;
-      cursor: pointer;
-      margin-top: 15px;
+      transition: 0.2s;
     }
 
-    .modal-footer {
-      text-align: right;
+    .fc-event:hover {
+      background-color: #125ea9 !important;
+      transform: scale(1.02);
+    }
+
+    #calendar {
+      max-width: 1000px;
+      width: 100%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
       margin-top: 20px;
     }
 
-    .modal-footer .btn-primary {
-      background-color: #204ed5ff;
-      color: white;
+    .create-btn {
+      align-self: flex-end;
+      background-color: #1976d2;
+      color: #fff;
       border: none;
       padding: 10px 18px;
+      font-weight: 600;
       font-size: 1em;
       border-radius: 8px;
+      transition: background 0.3s;
       cursor: pointer;
-      margin-right: 10px;
-      transition: background-color 0.3s;
+      margin-bottom: 10px;
     }
 
-    .modal-footer .btn-primary:hover {
-      background-color: #080f6fff;
+    .create-btn:hover {
+      background-color: #125ea9;
     }
 
-    .modal-footer .btn-danger {
-      background-color: #e53935;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      font-size: 1em;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+    @media (max-width: 600px) {
+      .modal-content {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .create-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      #calendar {
+        padding: 15px;
+      }
     }
 
-    .modal-footer .btn-danger:hover {
-      background-color: #700404ff;
-    }
 
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    @keyframes slideUp {
-      from {transform: translateY(30px); opacity: 0;}
-      to {transform: translateY(0); opacity: 1;}
-    }
   </style>
 </head>
 <body>
 
   <h1>Kalender Kegiatan Desa</h1>
 
-  <button class="create-btn" onclick="openCreateModal()">+ Buat Kegiatan</button>
+  <div style="text-align: center; margin: 20px 0;">
+    <button class="create-btn" onclick="openCreateModal()">+ Buat Kegiatan</button>
+  </div>
 
   <div id="calendar"></div>
 
@@ -193,13 +200,21 @@
   <div id="eventModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('eventModal').style.display='none'" title="Tutup">&times;</span>
-      <h2 id="eventTitle" style="text-align: center; margin-bottom: 15px;"></h2>
-      <p><strong>Tanggal:</strong> <span id="eventDate"></span></p>
-      <p><strong>Lokasi:</strong> <span id="eventLokasi"></span></p>
-      <p><strong>Jenis Peserta:</strong> <span id="eventJenisPeserta"></span></p>
-      <p><strong>Jumlah Peserta:</strong> <span id="eventJumlahPeserta"></span></p>
-      <p><strong>Keterangan:</strong> <span id="eventKeterangan"></span></p>
-      <p><strong>Deskripsi:</strong> <span id="eventDescription"></span></p>
+      <h2><input type="text" class="form-control" id="eventTitleInput" name="eventTitle"></h2>
+      <p><strong>Tanggal Mulai:</strong></p>
+      <input type="date" class="form-control" id="eventDateInput" name="eventDate">
+      <p><strong>Tanggal Selesai:</strong></p>
+      <input type="date" class="form-control" id="eventDateEndInput" name="eventDateEnd">
+      <p><strong>Lokasi:</strong></p>
+      <input type="text" class="form-control" id="eventLokasiInput" name="lokasi">
+      <p><strong>Jenis Peserta:</strong></p>
+      <input type="text" class="form-control" id="eventJenisPesertaInput" name="eventJenisPeserta">
+      <p><strong>Jumlah Peserta:</strong></p>
+      <input type="text" class="form-control" id="eventJumlahPesertaInput" name="eventJumlahPeserta">
+      <p><strong>Keterangan:</strong></p>
+      <input type="text" class="form-control" id="eventKeteranganInput" name="eventKeterangan">
+      <p><strong>Deskripsi:</strong></p>
+      <input type="text" class="form-control" id="eventDescriptionInput" name="eventDescription">
 
       <div class="modal-footer" style="text-align: right; margin-top: 20px;">
         <button type="button" class="btn btn-primary">Simpan Perubahan</button>
@@ -215,10 +230,10 @@
       <h2>Buat Kegiatan Baru</h2>
       <form id="createForm">
         <label>Judul:</label>
-        <input type="text" name="title" required>
+        <input type="text" name="title">
 
         <label>Tanggal Mulai:</label>
-        <input type="date" name="start" required>
+        <input type="date" name="start">
 
         <label>Tanggal Selesai:</label>
         <input type="date" name="end">
@@ -267,14 +282,33 @@
       const data = {
         judul: form.title,
         tanggalMulai: form.start,
-        tanggalSelesai: form.end,
+        tanggalSelesai: form.end || form.start,
         lokasi: form.lokasi,
-        jenisPeserta: form.jenisPeserta,
-        jumlahPeserta: form.jumlahPeserta,
-        keterangan: form.keterangan,
-        deskripsi: form.description
+        jenisPeserta: form.jenisPeserta || "Umum",
+        jumlahPeserta: form.jumlahPeserta || "1000",
+        keterangan: form.keterangan || "-",
+        deskripsi: form.description || "-"
       };
 
+      if (!form.title) {
+        alert("Judul wajib diisi.");
+        return;
+      }
+
+      if (!form.start || !form.end) {
+        alert("Tanggal wajib diisi.");
+        return;
+      }
+
+      if (!form.lokasi) {
+        alert("Lokasi wajib diisi.");
+        return;
+      }
+
+      if (form.end < form.start) {
+        alert("Tanggal selesai tidak boleh lebih awal dari tanggal mulai.");
+        return;
+      }
 
       try {
         const response = await fetch("http://127.0.0.1:8000/api/admin/create-kegiatan", {
@@ -302,7 +336,13 @@
       var calendarEl = document.getElementById('calendar');
 
       var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'id',
         initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+        },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
             const response = await fetch("http://127.0.0.1:8000/api/admin/kegiatan", {
@@ -321,29 +361,23 @@
         eventClick: function(info) {
           info.jsEvent.preventDefault();
 
-          selectedEventId = info.event.extendedProps.id;
+          selectedEventId = info.event.id;
           const props = info.event.extendedProps;
           const startDate = new Date(info.event.start);
           const endDate = info.event.end ? new Date(info.event.end) : null;
 
-          const formatter = new Intl.DateTimeFormat('id-ID', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric'
-          });
+          const startISO = info.event.startStr;
+          const endISO = info.event.endStr;
 
-          let tanggalFormatted = formatter.format(startDate);
-          if (endDate && endDate.toDateString() !== startDate.toDateString()) {
-            tanggalFormatted += ` s.d ${formatter.format(endDate)}`;
-          }
 
-          document.getElementById('eventTitle').textContent = info.event.title;
-          document.getElementById('eventDate').textContent = tanggalFormatted;
-          document.getElementById('eventLokasi').textContent = props.lokasi || 'Tidak disebutkan';
-          document.getElementById('eventJenisPeserta').textContent = props.jenisPeserta || 'Umum';
-          document.getElementById('eventJumlahPeserta').textContent = props.jumlahPeserta || 'Tanpa Batas';
-          document.getElementById('eventKeterangan').textContent = props.keterangan || '-';
-          document.getElementById('eventDescription').textContent = props.description || '(Tidak ada deskripsi)';
+          document.getElementById('eventTitleInput').value = info.event.title;
+          document.getElementById('eventDateInput').value = props.tanggalMulaiAsli ;
+          document.getElementById('eventDateEndInput').value = props.tanggalSelesaiAsli; 
+          document.getElementById('eventLokasiInput').value = props.lokasi;
+          document.getElementById('eventJenisPesertaInput').value = props.jenisPeserta || 'Umum';
+          document.getElementById('eventJumlahPesertaInput').value = props.jumlahPeserta || '1000';
+          document.getElementById('eventKeteranganInput').value = props.keterangan || '-';
+          document.getElementById('eventDescriptionInput').value = props.description || '-';
 
           document.getElementById('eventModal').style.display = 'block';
         }
@@ -358,7 +392,7 @@
         return;
       }
 
-      const konfirmasi = confirm("Apakah kamu yakin ingin menghapus kegiatan ini?");
+      const konfirmasi = confirm("Apakah Anda yakin ingin menghapus kegiatan ini?");
       if (!konfirmasi) return;
 
       try {
@@ -376,6 +410,61 @@
           location.reload();
         } else {
           alert("Gagal menghapus kegiatan: " + result.message);
+        }
+      } catch (error) {
+        alert("Gagal menghubungi server.");
+      }
+    });
+
+    document.querySelector(".btn-primary").addEventListener("click", async function () {
+      if (!selectedEventId) {
+        alert("ID kegiatan tidak ditemukan.");
+        return;
+      }
+
+      const konfirmasi = confirm("Apakah Anda yakin ingin mengubah kegiatan ini?");
+      if (!konfirmasi) return;
+
+      const judul = document.getElementById("eventTitleInput").value;
+      const tanggalMulai = document.getElementById("eventDateInput").value;
+      const tanggalSelesai = document.getElementById("eventDateEndInput").value;
+      const deskripsi = document.getElementById("eventDescriptionInput").value;
+      const lokasi = document.getElementById("eventLokasiInput").value;
+      const keterangan = document.getElementById("eventKeteranganInput").value;
+      const jenisPeserta = document.getElementById("eventJenisPesertaInput").value;
+      const jumlahPeserta = document.getElementById("eventJumlahPesertaInput").value;
+
+      if (tanggalSelesai < tanggalMulai) {
+        alert("Tanggal selesai tidak boleh lebih awal dari tanggal mulai.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/admin/update-kegiatan/${selectedEventId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({
+            judul,
+            tanggalMulai,
+            tanggalSelesai,
+            deskripsi,
+            lokasi,
+            keterangan,
+            jenisPeserta,
+            jumlahPeserta
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Kegiatan berhasil diupdate.");
+          location.reload();
+        } else {
+          alert("Gagal mengupdate kegiatan: " + result.message);
         }
       } catch (error) {
         alert("Gagal menghubungi server.");

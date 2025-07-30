@@ -1,55 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kalender Kegiatan Desa</title>
-
-  <!-- FullCalendar CSS -->
+  <title>Kalender Kegiatan Desa Takmung</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/id.global.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #ffe4e1, #fffaf0);
+      background: #f7f9fc;
       color: #333;
       margin: 0;
-      min-height: 100vh;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
     }
 
     h1 {
-      color: #d84315;
-      font-weight: 700;
-      font-size: 2.5em;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-      margin-bottom: 10px;
+      font-size: 2.2em;
+      color: #2c3e50;
+      font-weight: 600;
+      margin-bottom: 25px;
     }
 
     #calendar {
       max-width: 1000px;
       width: 100%;
-      background: #ffffffcc;
-      padding: 25px;
+      background: #ffffff;
+      padding: 20px;
       border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     .fc-event {
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background-color: #1976d2 !important;
+      border: none;
+      color: #fff !important;
+      padding: 5px;
+      border-radius: 6px;
+      font-size: 0.85em;
+      transition: all 0.2s ease-in-out;
     }
 
     .fc-event:hover {
+      background-color: #1565c0 !important;
       transform: scale(1.03);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
     }
 
-    /* Modal styling */
     .modal {
       display: none;
       position: fixed;
@@ -58,30 +60,29 @@
       top: 0;
       width: 100%;
       height: 100%;
+      background: rgba(0, 0, 0, 0.4);
       overflow: auto;
-      background-color: rgba(0,0,0,0.5);
-      animation: fadeIn 0.3s ease-in-out;
     }
 
     .modal-content {
-      background-color: #fff;
-      margin: 6% auto;
-      padding: 30px;
+      background: white;
+      margin: 8% auto;
+      padding: 25px 30px;
       border-radius: 12px;
       width: 90%;
-      max-width: 600px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      max-width: 500px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       animation: slideUp 0.3s ease-out;
       position: relative;
     }
 
     .close {
       position: absolute;
-      top: 12px;
-      right: 16px;
-      color: #999;
-      font-size: 28px;
+      top: 15px;
+      right: 20px;
+      font-size: 26px;
       font-weight: bold;
+      color: #999;
       cursor: pointer;
     }
 
@@ -89,36 +90,50 @@
       color: #000;
     }
 
+    .modal-content h2 {
+      text-align: center;
+      font-size: 1.5em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
     .modal-content p {
-      margin: 10px 0;
+      margin: 12px 0;
+      font-size: 0.95em;
       line-height: 1.6;
     }
 
     .modal-content strong {
-      color: #444;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
+      color: #34495e;
     }
 
     @keyframes slideUp {
-      from {transform: translateY(30px); opacity: 0;}
-      to {transform: translateY(0); opacity: 1;}
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8em;
+        text-align: center;
+      }
+
+      .modal-content {
+        padding: 20px;
+        margin-top: 20%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>📅 Kalender Kegiatan Desa Takmung</h1>
+  <h1>Kalender Kegiatan Desa Takmung</h1>
   <div id="calendar"></div>
 
-  <!-- Modal Detail Kegiatan -->
   <div id="eventModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('eventModal').style.display='none'" title="Tutup">&times;</span>
-      <h2 id="eventTitle" style="text-align: center; margin-bottom: 15px;"></h2>
+      <h2 id="eventTitle">Judul Kegiatan</h2>
       <p><strong>Tanggal:</strong> <span id="eventDate"></span></p>
       <p><strong>Lokasi:</strong> <span id="eventLokasi"></span></p>
       <p><strong>Jenis Peserta:</strong> <span id="eventJenisPeserta"></span></p>
@@ -128,20 +143,23 @@
     </div>
   </div>
 
-  <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
+      const calendarEl = document.getElementById('calendar');
 
-      var calendar = new FullCalendar.Calendar(calendarEl, {
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'id',
         initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+        },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch("http://127.0.0.1:8000/api/kalender/events", {
-            });
-
+            const response = await fetch("http://127.0.0.1:8000/api/kalender/events");
             if (!response.ok) throw new Error("Gagal ambil data");
 
             const data = await response.json();
@@ -185,8 +203,8 @@
     });
 
     window.onclick = function(event) {
-      var modal = document.getElementById('eventModal');
-      if (event.target == modal) {
+      const modal = document.getElementById('eventModal');
+      if (event.target === modal) {
         modal.style.display = "none";
       }
     }
