@@ -340,9 +340,29 @@
       }
     });
 
-    function logout() {
-    localStorage.removeItem("adminToken"); // hapus token admin
-    window.location.href = "/admin/login"; // redirect ke login
+      async function logout() {
+    const token = localStorage.getItem("adminToken");
+
+    try {
+      const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        alert("Berhasil logout");
+        localStorage.removeItem("adminToken"); // hapus token dari localStorage
+        window.location.href = "/admin/login"; // redirect ke halaman login
+      } else {
+        const result = await response.json();
+        alert("Gagal logout: " + result.message);
+      }
+    } catch (error) {
+      alert("Terjadi kesalahan saat logout.");
+    }
   }
 
     document.addEventListener('DOMContentLoaded', function () {

@@ -18,5 +18,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/create-kegiatan', [KalenderController::class, 'store']);
     Route::put('/admin/update-kegiatan/{id}', [KalenderController::class, 'update']);
     Route::delete('/admin/delete-kegiatan/{id}', [KalenderController::class, 'delete']);
+    Route::post('/admin/logout', [KalenderController::class, 'delete']);
 });
 
