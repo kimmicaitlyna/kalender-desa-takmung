@@ -277,10 +277,13 @@
     const token = localStorage.getItem("adminToken");
     let selectedEventId = null; 
     
+    window.onpageshow = function(event) {
+      const token = localStorage.getItem("adminToken");
     if (!token) {
-        alert("Akses ditolak. Anda belum login.");
-        window.location.href = "/admin/login";
+      alert("Sesi Anda telah berakhir. Silakan login kembali.");
+      window.location.href = "/admin/login";
     }
+  };
 
     function openCreateModal() {
       document.getElementById('createModal').style.display = 'block';
