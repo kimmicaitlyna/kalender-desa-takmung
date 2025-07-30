@@ -429,31 +429,32 @@
     });
 
      document.getElementById("logoutBtn").addEventListener("click", async function () {
-    const konfirmasi = confirm("Yakin ingin logout?");
-    if (!konfirmasi) return;
+      const konfirmasi = confirm("Yakin ingin logout?");
+      if (!konfirmasi) return;
 
-    try {
-      const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + token,
-          "Accept": "application/json"
+      try {
+        const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + token,
+            "Accept": "application/json"
+          }
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Logout berhasil");
+          localStorage.removeItem("adminToken"); 
+          window.location.href = "/admin/login";
+        } else {
+          alert("Logout gagal: " + (result.message || "Unknown error"));
         }
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        alert("Logout berhasil");
-        window.location.href = "/admin/login";
-      } else {
-        alert("Logout gagal: " + (result.message || "Unknown error"));
+      } catch (error) {
+        console.error(error);
+        alert("Terjadi kesalahan saat logout.");
       }
-    } catch (error) {
-      console.error(error);
-      alert("Terjadi kesalahan saat logout.");
-    }
-  });
+    });
 
     document.querySelector(".btn-primary").addEventListener("click", async function () {
       if (!selectedEventId) {
