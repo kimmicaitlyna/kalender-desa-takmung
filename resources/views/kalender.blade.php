@@ -159,7 +159,7 @@
         },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch("http://127.0.0.1:8000/api/kalender/events");
+            const response = await fetch("https://kalender.takmung.site/api/kalender/events");
             if (!response.ok) throw new Error("Gagal ambil data");
 
             const data = await response.json();

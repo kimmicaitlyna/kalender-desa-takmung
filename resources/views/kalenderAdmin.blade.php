@@ -311,7 +311,7 @@
       }
 
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/admin/create-kegiatan", {
+        const response = await fetch("https://kalender.takmung.site/api/admin/create-kegiatan", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -345,7 +345,7 @@
         },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch("http://127.0.0.1:8000/api/admin/kegiatan", {
+            const response = await fetch("https://kalender.takmung.site/api/admin/kegiatan", {
               headers: { "Authorization": "Bearer " + token }
             });
 
@@ -396,7 +396,7 @@
       if (!konfirmasi) return;
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/admin/delete-kegiatan/${selectedEventId}`, {
+        const response = await fetch(`https://kalender.takmung.site/api/admin/delete-kegiatan/${selectedEventId}`, {
           method: "DELETE",
           headers: {
             "Authorization": "Bearer " + token
@@ -440,7 +440,7 @@
       }
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/admin/update-kegiatan/${selectedEventId}`, {
+        const response = await fetch(`https://kalender.takmung.site/api/admin/update-kegiatan/${selectedEventId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
