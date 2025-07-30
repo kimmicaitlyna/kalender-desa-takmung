@@ -396,6 +396,9 @@
       });
 
       calendar.render();
+       <button onclick="logout()" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+      Logout
+    </button>
     });
 
     document.querySelector(".btn-danger").addEventListener("click", async function () {
