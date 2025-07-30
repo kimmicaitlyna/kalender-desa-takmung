@@ -323,7 +323,7 @@
       }
 
       try {
-        const response = await fetch("zadmin/create-kegiatan", {
+        const response = await fetch("admin/create-kegiatan", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -357,7 +357,7 @@
         },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch("http://127.0.0.1:8000/api/admin/kegiatan", {
+            const response = await fetch("https://kalender.takmung.site/api/admin/kegiatan", {
               headers: { "Authorization": "Bearer " + token }
             });
 
@@ -398,7 +398,37 @@
       calendar.render();
     });
 
-  document.getElementById("logoutBtn").addEventListener("click", async function () {
+    document.querySelector(".btn-danger").addEventListener("click", async function () {
+      if (!selectedEventId) {
+        alert("ID kegiatan tidak ditemukan.");
+        return;
+      }
+
+      const konfirmasi = confirm("Apakah Anda yakin ingin menghapus kegiatan ini?");
+      if (!konfirmasi) return;
+
+      try {
+        const response = await fetch(`https://kalender.takmung.site/api/admin/delete-kegiatan/${selectedEventId}`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Kegiatan berhasil dihapus.");
+          location.reload();
+        } else {
+          alert("Gagal menghapus kegiatan: " + result.message);
+        }
+      } catch (error) {
+        alert("Gagal menghubungi server.");
+      }
+    });
+
+     document.getElementById("logoutBtn").addEventListener("click", async function () {
     const konfirmasi = confirm("Yakin ingin logout?");
     if (!konfirmasi) return;
 
@@ -425,37 +455,6 @@
     }
   });
 
-
-    document.querySelector(".btn-danger").addEventListener("click", async function () {
-      if (!selectedEventId) {
-        alert("ID kegiatan tidak ditemukan.");
-        return;
-      }
-
-      const konfirmasi = confirm("Apakah Anda yakin ingin menghapus kegiatan ini?");
-      if (!konfirmasi) return;
-
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/admin/delete-kegiatan/${selectedEventId}`, {
-          method: "DELETE",
-          headers: {
-            "Authorization": "Bearer " + token
-          }
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          alert("Kegiatan berhasil dihapus.");
-          location.reload();
-        } else {
-          alert("Gagal menghapus kegiatan: " + result.message);
-        }
-      } catch (error) {
-        alert("Gagal menghubungi server.");
-      }
-    });
-
     document.querySelector(".btn-primary").addEventListener("click", async function () {
       if (!selectedEventId) {
         alert("ID kegiatan tidak ditemukan.");
@@ -480,7 +479,7 @@
       }
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/admin/update-kegiatan/${selectedEventId}`, {
+        const response = await fetch(`https://kalender.takmung.site/api/admin/update-kegiatan/${selectedEventId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
