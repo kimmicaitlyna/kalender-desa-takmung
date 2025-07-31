@@ -326,7 +326,7 @@
       }
 
       try {
-        const response = await fetch("admin/create-kegiatan", {
+        const response = await fetch("https://kalender.takmung.site/api/admin/create-kegiatan", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
