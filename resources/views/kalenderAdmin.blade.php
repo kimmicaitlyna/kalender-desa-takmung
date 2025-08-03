@@ -190,6 +190,12 @@
       #calendar {
         padding: 15px;
       }
+
+      footer {
+        margin-top: 40px;
+        font-size: 0.9em;
+        color: #777;
+      }
     }
 
 
