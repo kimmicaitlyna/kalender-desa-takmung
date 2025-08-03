@@ -96,13 +96,13 @@
     }
 
     .btn-primary {
-      background-color: #1976d2;
+      background-color: #004d40;
       color: white;
       margin-right: 10px;
     }
 
     .btn-primary:hover {
-      background-color: #125ea9;
+      background-color:#00695c;
     }
 
     .btn-danger {
@@ -531,6 +531,10 @@
       });
     }
   </script>
+
+  <footer>
+    &copy; 2025 Desa Takmung. Dibuat oleh Mahasiswa KKN Universitas Atma Jaya Yogyakarta
+  </footer>
 
 </body>
 </html>
