@@ -3,53 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <title>Kalender Kegiatan Desa Takmung</title>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/id.global.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: #f7f9fc;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
       color: #333;
       margin: 0;
       padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
 
     h1 {
-      font-size: 2.2em;
-      color: #2c3e50;
-      font-weight: 600;
-      margin-bottom: 25px;
+      font-size: 2.5em;
+      color: #00695c;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
     }
 
     #calendar {
       max-width: 1000px;
       width: 100%;
       background: #ffffff;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease-in-out;
     }
 
     .fc-event {
-      background-color: #1976d2 !important;
+      background-color: #009688 !important;
       border: none;
       color: #fff !important;
-      padding: 5px;
+      padding: 6px;
       border-radius: 6px;
-      font-size: 0.85em;
+      font-size: 0.9em;
+      font-weight: 500;
       transition: all 0.2s ease-in-out;
     }
 
     .fc-event:hover {
-      background-color: #1565c0 !important;
-      transform: scale(1.03);
+      background-color: #00796b !important;
+      transform: scale(1.05);
       cursor: pointer;
+    }
+
+    button#adminLogin {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      z-index: 1000;
+      padding: 10px 18px;
+      background-color: #004d40;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.3s;
+    }
+
+    button#adminLogin:hover {
+      background-color: #00695c;
     }
 
     .modal {
@@ -92,19 +115,19 @@
 
     .modal-content h2 {
       text-align: center;
-      font-size: 1.5em;
-      color: #2c3e50;
+      font-size: 1.7em;
+      color: #00796b;
       margin-bottom: 20px;
     }
 
     .modal-content p {
-      margin: 12px 0;
-      font-size: 0.95em;
-      line-height: 1.6;
+      margin: 10px 0;
+      font-size: 1em;
+      line-height: 1.5;
     }
 
     .modal-content strong {
-      color: #34495e;
+      color: #004d40;
     }
 
     @keyframes slideUp {
@@ -122,22 +145,27 @@
         padding: 20px;
         margin-top: 20%;
       }
+
+      button#adminLogin {
+        top: 15px;
+        right: 15px;
+        padding: 8px 14px;
+        font-size: 0.9em;
+      }
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
-  <button onclick="window.location.href='/admin/login'" style="
-    padding: 8px 16px;
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-  ">Login Admin</button>
-</div>
 
+  <button id="adminLogin" onclick="window.location.href='/admin/login'">
+    Login Admin
+  </button>
 
   <h1>Kalender Kegiatan Desa Takmung</h1>
   <div id="calendar"></div>
@@ -221,6 +249,10 @@
       }
     }
   </script>
+
+  <footer>
+    &copy; 2025 Desa Takmung. Dibuat oleh Mahasiswa KKN Universitas Atma Jaya Yogyakarta
+  </footer>
 
 </body>
 </html>
