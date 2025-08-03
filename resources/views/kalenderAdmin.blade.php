@@ -157,7 +157,7 @@
 
     .create-btn {
       align-self: flex-end;
-      background-color: #1976d2;
+      background-color: #004d40;
       color: #fff;
       border: none;
       padding: 10px 18px;
@@ -170,7 +170,7 @@
     }
 
     .create-btn:hover {
-      background-color: #125ea9;
+      background-color: #00695c;
     }
 
     @media (max-width: 600px) {
