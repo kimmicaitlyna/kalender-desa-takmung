@@ -1,99 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>Kalender Kegiatan Desa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- FullCalendar CSS & JS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/id.global.min.js"></script>
 
-
-  <!-- FullCalendar CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-     body {
+    body {
       font-family: 'Poppins', sans-serif;
-      background: #f7f9fc;
-      color: #333;
+      background-color: #f7f9fc;
       margin: 0;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 20px;
+      color: #333;
     }
 
     h1 {
-      color: #444;
-      font-weight: 600;
-      font-size: 2.2em;
-      margin-bottom: 20px;
       text-align: center;
+      font-size: 2.2em;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
 
-    #createModal, #eventModal {
-      z-index: 1000;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      overflow: auto;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .modal-content {
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 30px;
-      width: 95%;
-      max-width: 600px;
-      margin: 50px auto;
-      position: relative;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    }
-
-    label {
-      margin-top: 15px;
-      font-weight: 500;
-      display: block;
-    }
-
-    input, textarea {
-      margin-top: 5px;
-      padding: 10px;
-      font-size: 0.95em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    .submit-btn, .btn-primary, .btn-danger {
-      padding: 10px 16px;
+    .btn {
+      padding: 10px 18px;
       font-size: 1em;
-      font-weight: 500;
+      font-weight: 600;
       border-radius: 8px;
       border: none;
       cursor: pointer;
-    }
-
-    .submit-btn {
-      background-color: #388e3c;
-      color: #fff;
-      margin-top: 20px;
+      transition: 0.2s;
     }
 
     .btn-primary {
       background-color: #1976d2;
       color: white;
-      margin-right: 10px;
     }
 
     .btn-primary:hover {
@@ -109,45 +57,9 @@
       background-color: #c62828;
     }
 
-    .close {
-      position: absolute;
-      top: 12px;
-      right: 20px;
-      font-size: 26px;
-      color: #aaa;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: #000;
-    }
-
-    .fc-event {
-      background-color: #1976d2 !important;
-      border: none;
-      color: white !important;
-      padding: 5px 10px;
-      border-radius: 6px;
-      transition: 0.2s;
-    }
-
-    .fc-event:hover {
-      background-color: #125ea9 !important;
-      transform: scale(1.02);
-    }
-
-    #calendar {
-      max-width: 1000px;
-      width: 100%;
-      background: #fff;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      margin-top: 20px;
-    }
-
-    .create-btn {
-      align-self: flex-end;
+    .btn-create {
+      display: inline-block;
+      margin: 20px 0;
       background-color: #1976d2;
       color: #fff;
       border: none;
@@ -155,202 +67,319 @@
       font-weight: 600;
       font-size: 1em;
       border-radius: 8px;
-      transition: background 0.3s;
       cursor: pointer;
-      margin-bottom: 10px;
     }
 
-    .create-btn:hover {
+    .btn-create:hover {
       background-color: #125ea9;
     }
 
-    @media (max-width: 600px) {
-      .modal-content {
-        padding: 20px;
-      }
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #c60000;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
+    #calendar {
+      max-width: 1000px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .fc-event {
+      background-color: #1976d2 !important;
+      color: white !important;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.9em;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.4);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      font-size: 0.95em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .modal-content textarea {
+      resize: vertical;
+    }
+
+    .modal-footer {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 26px;
+      color: #888;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    @media (max-width: 600px) {
       h1 {
         font-size: 1.8em;
       }
 
-      .create-btn {
-        width: 100%;
-        text-align: center;
-      }
-
-      #calendar {
-        padding: 15px;
+      .logout-btn {
+        top: 10px;
+        right: 10px;
+        font-size: 0.9em;
+        padding: 8px 14px;
       }
     }
-
-
   </style>
 </head>
 <body>
 
-  <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px;">
-  <button  id="logoutBtn" style="
-    padding: 8px 16px;
-    background-color: #c60000ff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-  ">Logout </button>
-</div>
+  <button class="logout-btn" id="logoutBtn">Logout</button>
 
   <h1>Kalender Kegiatan Desa</h1>
 
-  <div style="text-align: center; margin: 20px 0;">
-    <button class="create-btn" onclick="openCreateModal()">+ Buat Kegiatan</button>
+  <div style="text-align:center;">
+    <button class="btn-create" onclick="openCreateModal()">+ Buat Kegiatan</button>
   </div>
 
   <div id="calendar"></div>
 
-  <!-- Modal Detail Kegiatan -->
-  <div id="eventModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="document.getElementById('eventModal').style.display='none'" title="Tutup">&times;</span>
-      <h2><input type="text" class="form-control" id="eventTitleInput" name="eventTitle"></h2>
-      <p><strong>Tanggal Mulai:</strong></p>
-      <input type="date" class="form-control" id="eventDateInput" name="eventDate">
-      <p><strong>Tanggal Selesai:</strong></p>
-      <input type="date" class="form-control" id="eventDateEndInput" name="eventDateEnd">
-      <p><strong>Lokasi:</strong></p>
-      <input type="text" class="form-control" id="eventLokasiInput" name="lokasi">
-      <p><strong>Jenis Peserta:</strong></p>
-      <input type="text" class="form-control" id="eventJenisPesertaInput" name="eventJenisPeserta">
-      <p><strong>Jumlah Peserta:</strong></p>
-      <input type="text" class="form-control" id="eventJumlahPesertaInput" name="eventJumlahPeserta">
-      <p><strong>Keterangan:</strong></p>
-      <input type="text" class="form-control" id="eventKeteranganInput" name="eventKeterangan">
-      <p><strong>Deskripsi:</strong></p>
-      <input type="text" class="form-control" id="eventDescriptionInput" name="eventDescription">
-
-      <div class="modal-footer" style="text-align: right; margin-top: 20px;">
-        <button type="button" class="btn btn-primary">Simpan Perubahan</button>
-        <button type="button" class="btn btn-danger">Hapus Kegiatan</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Form Create Kegiatan -->
+  <!-- Modals: Create and Edit/Detail -->
   <div id="createModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="document.getElementById('createModal').style.display='none'">&times;</span>
+      <span class="close" onclick="closeModal('createModal')">&times;</span>
       <h2>Buat Kegiatan Baru</h2>
       <form id="createForm">
-        <label>Judul:</label>
-        <input type="text" name="title">
+        <label>Judul</label>
+        <input type="text" name="title" required>
 
-        <label>Tanggal Mulai:</label>
-        <input type="date" name="start">
+        <label>Tanggal Mulai</label>
+        <input type="date" name="start" required>
 
-        <label>Tanggal Selesai:</label>
-        <input type="date" name="end">
+        <label>Tanggal Selesai</label>
+        <input type="date" name="end" required>
 
-        <label>Lokasi:</label>
-        <input type="text" name="lokasi">
+        <label>Lokasi</label>
+        <input type="text" name="lokasi" required>
 
-        <label>Jenis Peserta:</label>
+        <label>Jenis Peserta</label>
         <input type="text" name="jenisPeserta">
 
-        <label>Jumlah Peserta:</label>
+        <label>Jumlah Peserta</label>
         <input type="number" name="jumlahPeserta">
 
-        <label>Keterangan:</label>
+        <label>Keterangan</label>
         <input type="text" name="keterangan">
 
-        <label>Deskripsi:</label>
+        <label>Deskripsi</label>
         <textarea name="description" rows="4"></textarea>
 
-        <button type="submit" class="submit-btn">Simpan</button>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
       </form>
     </div>
   </div>
 
-  <!-- FullCalendar JS -->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('eventModal')">&times;</span>
+      <h2>Edit Kegiatan</h2>
 
+      <label>Judul</label>
+      <input type="text" id="eventTitleInput">
+
+      <label>Tanggal Mulai</label>
+      <input type="date" id="eventDateInput">
+
+      <label>Tanggal Selesai</label>
+      <input type="date" id="eventDateEndInput">
+
+      <label>Lokasi</label>
+      <input type="text" id="eventLokasiInput">
+
+      <label>Jenis Peserta</label>
+      <input type="text" id="eventJenisPesertaInput">
+
+      <label>Jumlah Peserta</label>
+      <input type="number" id="eventJumlahPesertaInput">
+
+      <label>Keterangan</label>
+      <input type="text" id="eventKeteranganInput">
+
+      <label>Deskripsi</label>
+      <textarea id="eventDescriptionInput" rows="4"></textarea>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="updateEvent()">Simpan Perubahan</button>
+        <button class="btn btn-danger" onclick="deleteEvent()">Hapus Kegiatan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Logic -->
   <script>
     const token = localStorage.getItem("adminToken");
-    let selectedEventId = null; 
-    
-    window.onpageshow = function(event) {
-      const token = localStorage.getItem("adminToken");
-    if (!token) {
-      alert("Sesi Anda telah berakhir. Silakan login kembali.");
-      window.location.href = "/admin/login";
-    }
-  };
+    let selectedEventId = null;
 
     function openCreateModal() {
       document.getElementById('createModal').style.display = 'block';
     }
 
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    window.onclick = function(e) {
+      if (e.target.classList.contains("modal")) {
+        e.target.style.display = "none";
+      }
+    }
+
     document.getElementById("createForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-      const formData = new FormData(e.target);
-      const form = Object.fromEntries(formData.entries());
+      const form = Object.fromEntries(new FormData(this).entries());
 
-      const data = {
+      const payload = {
         judul: form.title,
         tanggalMulai: form.start,
-        tanggalSelesai: form.end || form.start,
+        tanggalSelesai: form.end,
         lokasi: form.lokasi,
         jenisPeserta: form.jenisPeserta || "Umum",
-        jumlahPeserta: form.jumlahPeserta || "1000",
+        jumlahPeserta: form.jumlahPeserta || "100",
         keterangan: form.keterangan || "-",
         deskripsi: form.description || "-"
       };
 
-      if (!form.title) {
-        alert("Judul wajib diisi.");
-        return;
-      }
-
-      if (!form.start || !form.end) {
-        alert("Tanggal wajib diisi.");
-        return;
-      }
-
-      if (!form.lokasi) {
-        alert("Lokasi wajib diisi.");
-        return;
-      }
-
-      if (form.end < form.start) {
-        alert("Tanggal selesai tidak boleh lebih awal dari tanggal mulai.");
-        return;
-      }
-
       try {
-        const response = await fetch("https://kalender.takmung.site/api/admin/create-kegiatan", {
+        const res = await fetch("https://kalender.takmung.site/api/admin/create-kegiatan", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(payload)
         });
 
-        const result = await response.json();
-        if (response.ok) {
-          alert("Kegiatan berhasil dibuat!");
+        const result = await res.json();
+        if (res.ok) {
+          alert("Kegiatan berhasil dibuat.");
           location.reload();
         } else {
-          alert("Gagal menyimpan kegiatan: " + result.message);
+          alert("Gagal: " + result.message);
         }
-      } catch (error) {
-        alert("Kesalahan koneksi.");
+      } catch {
+        alert("Gagal menghubungi server.");
       }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
+    function updateEvent() {
+      const payload = {
+        judul: document.getElementById("eventTitleInput").value,
+        tanggalMulai: document.getElementById("eventDateInput").value,
+        tanggalSelesai: document.getElementById("eventDateEndInput").value,
+        lokasi: document.getElementById("eventLokasiInput").value,
+        jenisPeserta: document.getElementById("eventJenisPesertaInput").value,
+        jumlahPeserta: document.getElementById("eventJumlahPesertaInput").value,
+        keterangan: document.getElementById("eventKeteranganInput").value,
+        deskripsi: document.getElementById("eventDescriptionInput").value
+      };
 
-      var calendar = new FullCalendar.Calendar(calendarEl, {
+      fetch(`https://kalender.takmung.site/api/admin/update-kegiatan/${selectedEventId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("Berhasil diperbarui");
+        location.reload();
+      })
+      .catch(() => alert("Gagal memperbarui data"));
+    }
+
+    function deleteEvent() {
+      if (!confirm("Yakin ingin menghapus kegiatan ini?")) return;
+
+      fetch(`https://kalender.takmung.site/api/admin/delete-kegiatan/${selectedEventId}`, {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + token }
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("Kegiatan dihapus.");
+        location.reload();
+      })
+      .catch(() => alert("Gagal menghapus kegiatan."));
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      if (!confirm("Yakin ingin logout?")) return;
+
+      fetch("https://kalender.takmung.site/api/admin/logout", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + token }
+      }).then(res => res.json())
+        .then(() => {
+          localStorage.removeItem("adminToken");
+          window.location.href = "/admin/login";
+        }).catch(() => alert("Logout gagal."));
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'id',
         initialView: 'dayGridMonth',
         headerToolbar: {
@@ -360,168 +389,35 @@
         },
         events: async function(fetchInfo, successCallback, failureCallback) {
           try {
-            const response = await fetch("https://kalender.takmung.site/api/admin/kegiatan", {
+            const res = await fetch("https://kalender.takmung.site/api/admin/kegiatan", {
               headers: { "Authorization": "Bearer " + token }
             });
-
-            if (!response.ok) throw new Error("Gagal ambil data");
-
-            const data = await response.json();
+            const data = await res.json();
             successCallback(data);
-          } catch (error) {
-            console.error("Gagal memuat kegiatan:", error);
-            failureCallback(error);
+          } catch (err) {
+            console.error("Fetch error:", err);
+            failureCallback(err);
           }
         },
         eventClick: function(info) {
-          info.jsEvent.preventDefault();
-
-          selectedEventId = info.event.id;
           const props = info.event.extendedProps;
-          const startDate = new Date(info.event.start);
-          const endDate = info.event.end ? new Date(info.event.end) : null;
+          selectedEventId = info.event.id;
 
-          const startISO = info.event.startStr;
-          const endISO = info.event.endStr;
+          document.getElementById("eventTitleInput").value = info.event.title;
+          document.getElementById("eventDateInput").value = props.tanggalMulaiAsli;
+          document.getElementById("eventDateEndInput").value = props.tanggalSelesaiAsli;
+          document.getElementById("eventLokasiInput").value = props.lokasi;
+          document.getElementById("eventJenisPesertaInput").value = props.jenisPeserta;
+          document.getElementById("eventJumlahPesertaInput").value = props.jumlahPeserta;
+          document.getElementById("eventKeteranganInput").value = props.keterangan;
+          document.getElementById("eventDescriptionInput").value = props.description;
 
-
-          document.getElementById('eventTitleInput').value = info.event.title;
-          document.getElementById('eventDateInput').value = props.tanggalMulaiAsli ;
-          document.getElementById('eventDateEndInput').value = props.tanggalSelesaiAsli; 
-          document.getElementById('eventLokasiInput').value = props.lokasi;
-          document.getElementById('eventJenisPesertaInput').value = props.jenisPeserta || 'Umum';
-          document.getElementById('eventJumlahPesertaInput').value = props.jumlahPeserta || '1000';
-          document.getElementById('eventKeteranganInput').value = props.keterangan || '-';
-          document.getElementById('eventDescriptionInput').value = props.description || '-';
-
-          document.getElementById('eventModal').style.display = 'block';
+          document.getElementById("eventModal").style.display = "block";
         }
       });
 
       calendar.render();
     });
-
-    document.querySelector(".btn-danger").addEventListener("click", async function () {
-      if (!selectedEventId) {
-        alert("ID kegiatan tidak ditemukan.");
-        return;
-      }
-
-      const konfirmasi = confirm("Apakah Anda yakin ingin menghapus kegiatan ini?");
-      if (!konfirmasi) return;
-
-      try {
-        const response = await fetch(`https://kalender.takmung.site/api/admin/delete-kegiatan/${selectedEventId}`, {
-          method: "DELETE",
-          headers: {
-            "Authorization": "Bearer " + token
-          }
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          alert("Kegiatan berhasil dihapus.");
-          location.reload();
-        } else {
-          alert("Gagal menghapus kegiatan: " + result.message);
-        }
-      } catch (error) {
-        alert("Gagal menghubungi server.");
-      }
-    });
-
-     document.getElementById("logoutBtn").addEventListener("click", async function () {
-      const konfirmasi = confirm("Yakin ingin logout?");
-      if (!konfirmasi) return;
-
-      try {
-        const response = await fetch("https://kalender.takmung.site/api/admin/logout", {
-          method: "POST",
-          headers: {
-            "Authorization": "Bearer " + token,
-            "Accept": "application/json"
-          }
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          alert("Logout berhasil");
-          localStorage.removeItem("adminToken"); 
-          window.location.href = "/admin/login";
-        } else {
-          alert("Logout gagal: " + (result.message || "Unknown error"));
-        }
-      } catch (error) {
-        console.error(error);
-        alert("Terjadi kesalahan saat logout.");
-      }
-    });
-
-    document.querySelector(".btn-primary").addEventListener("click", async function () {
-      if (!selectedEventId) {
-        alert("ID kegiatan tidak ditemukan.");
-        return;
-      }
-
-      const konfirmasi = confirm("Apakah Anda yakin ingin mengubah kegiatan ini?");
-      if (!konfirmasi) return;
-
-      const judul = document.getElementById("eventTitleInput").value;
-      const tanggalMulai = document.getElementById("eventDateInput").value;
-      const tanggalSelesai = document.getElementById("eventDateEndInput").value;
-      const deskripsi = document.getElementById("eventDescriptionInput").value;
-      const lokasi = document.getElementById("eventLokasiInput").value;
-      const keterangan = document.getElementById("eventKeteranganInput").value;
-      const jenisPeserta = document.getElementById("eventJenisPesertaInput").value;
-      const jumlahPeserta = document.getElementById("eventJumlahPesertaInput").value;
-
-      if (tanggalSelesai < tanggalMulai) {
-        alert("Tanggal selesai tidak boleh lebih awal dari tanggal mulai.");
-        return;
-      }
-
-      try {
-        const response = await fetch(`https://kalender.takmung.site/api/admin/update-kegiatan/${selectedEventId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: JSON.stringify({
-            judul,
-            tanggalMulai,
-            tanggalSelesai,
-            deskripsi,
-            lokasi,
-            keterangan,
-            jenisPeserta,
-            jumlahPeserta
-          })
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          alert("Kegiatan berhasil diupdate.");
-          location.reload();
-        } else {
-          alert("Gagal mengupdate kegiatan: " + result.message);
-        }
-      } catch (error) {
-        alert("Gagal menghubungi server.");
-      }
-    });
-
-
-    // Tutup modal saat klik di luar konten
-    window.onclick = function(event) {
-      document.querySelectorAll('.modal').forEach(modal => {
-        if (event.target == modal) modal.style.display = "none";
-      });
-    }
   </script>
-
 </body>
 </html>
