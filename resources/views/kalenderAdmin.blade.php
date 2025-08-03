@@ -195,10 +195,9 @@
         margin-top: 40px;
         font-size: 0.9em;
         color: #777;
+        margin-top: 40px; 
       }
     }
-
-
   </style>
 </head>
 <body>
